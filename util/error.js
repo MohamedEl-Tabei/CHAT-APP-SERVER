@@ -1,6 +1,6 @@
 const getErrorMessage=(error)=>{
     const message=error.message
-    if(error.code)
+    if(error.code===11000)
     {
         const x=message.indexOf('\"')+1
         const y=message.indexOf('\" }')

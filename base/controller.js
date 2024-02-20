@@ -22,6 +22,7 @@ const Controller = {
   //U
   User: require("../controller/user_controller"),
   //V
+  VerifyEmail:require("../controller/verifyEmail_controller")
   //W
   //X
   //Y

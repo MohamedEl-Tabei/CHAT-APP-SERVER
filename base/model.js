@@ -22,6 +22,7 @@ const Model = {
     //U
     User: require("../models/user_model"),
     //V
+    VerifyEmail:require("../models/verifyEmail_model")
     //W
     //X
     //Y

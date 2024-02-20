@@ -22,6 +22,7 @@ const Router = {
   //U
   User: require("../router/user_router"),
   //V
+  VerifyEmail:require("../router/verifyEmail_router")
   //W
   //X
   //Y

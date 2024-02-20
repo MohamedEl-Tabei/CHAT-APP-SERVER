@@ -25,7 +25,7 @@ const Password = (password) => {
 };
 const Email = (email) => {
   if (email.length === 0) throwNewError("Email is required.");
-  else if (!/^[a-zA-Z]+[A-Za-z0-9.-_]+@+[a-zA-Z]+\.[a-zA-Z]{2,}$/.test(email))
+  else if (!/^[a-zA-Z]+[A-Za-z0-9.]+@+[a-zA-Z]+\.[a-zA-Z]{2,}$/.test(email))
     throwNewError("Invalid email address.");
 };
 module.exports = { Name, Password, Email };
