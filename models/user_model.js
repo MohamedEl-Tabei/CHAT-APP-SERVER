@@ -5,6 +5,9 @@ const schema = {
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   image: { type: String, default: "https://i.ibb.co/QrJDDVt/salah.png" },
+  friends:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
+  requestToYou:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
+  requestFromYou:{type:[mongoose.SchemaTypes.ObjectId],default:[]}
 };
 const options = {
   timestamps: true,

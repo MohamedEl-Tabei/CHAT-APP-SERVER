@@ -4,5 +4,7 @@ const hash=async(plainText)=>{
     let hashData=await bcrypt.hash(plainText,salt)
     return hashData
 }
-
-module.exports={hash}
+const compare=async(plainText,hashData)=>{
+   return await bcrypt.compare(plainText,hashData)
+}
+module.exports={hash,compare}
