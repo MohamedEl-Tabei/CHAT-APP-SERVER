@@ -14,7 +14,21 @@ const code = async (email, cod) => {
     from: process.env.EMAIL,
     to: email,
     subject: "Verify Email",
-    html: `<p>${cod}</p>`,
+    html: `
+    <div style="padding: 50px;">
+      <div style="
+      font-size:30px;
+      border-radius: 60px;
+      margin:auto;
+      width:max-content;
+      padding:30px 60px;
+      background-color:#106ffb;
+      color:white;">
+        ${cod}
+      </div>
+    </div>
+    
+    `,
   });
 };
 
