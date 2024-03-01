@@ -51,4 +51,12 @@ const getUser = async (req, res) => {
     res.status(401).json(Util.Error.getErrorMessage(error));
   }
 };
-module.exports = { signup, login, getAllUser, getUser };
+const deleteAllusers=async (req,res)=>{
+  try {
+    await Model.User.deleteMany();
+    res.status(200).json("Done")
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+}
+module.exports = { signup, login, getAllUser, getUser,deleteAllusers };

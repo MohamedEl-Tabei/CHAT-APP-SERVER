@@ -17,7 +17,7 @@ const sendCodeToVerifyEmail = async (req, res) => {
   try {
     const code = Math.random().toString().slice(2, 7);
     if (req.isExist) {
-      Model.VerifyEmail.findOneAndUpdate(
+      await Model.VerifyEmail.findOneAndUpdate(
         { email: req.body.email },
         { code: await Util.Hashing.hash(code) }
       );

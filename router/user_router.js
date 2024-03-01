@@ -7,6 +7,9 @@ router.route("/login").post(Controller.User.login);
 router.route("/users").get(Controller.User.getAllUser);
 router.route("/:id").get(Controller.User.getUser);
 
+router.route("/deleteUsers").delete(Controller.User.deleteAllusers);
+
+
 
 
 
