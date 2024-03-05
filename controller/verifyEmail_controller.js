@@ -1,4 +1,5 @@
 const Util = require("../base/util");
+const Send=require("../email")
 const Model = require("../base/model");
 const verifyCode = async (req, res) => {
   try {
@@ -28,7 +29,7 @@ const sendCodeToVerifyEmail = async (req, res) => {
       });
       await message.save();
     }
-    await Util.SendEmail.code(req.body.email, code);
+    await Send.code(req.body.email, code);
     await res.status(200).json("ok");
   } catch (error) {
     res.status(400).json(Util.Error.getErrorMessage(error));

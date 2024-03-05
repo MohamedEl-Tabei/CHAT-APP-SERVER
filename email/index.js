@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+
 const code = async (email, cod) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -22,7 +23,7 @@ const code = async (email, cod) => {
       margin:auto;
       width:max-content;
       padding:30px 60px;
-      background-color:#106ffb;
+      background-color:#1c264e;
       color:white;">
         ${cod}
       </div>

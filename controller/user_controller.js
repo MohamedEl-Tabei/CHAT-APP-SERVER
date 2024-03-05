@@ -51,6 +51,15 @@ const getUser = async (req, res) => {
     res.status(401).json(Util.Error.getErrorMessage(error));
   }
 };
+const LoginByToken=async(req,res)=>{
+  try {
+    let user=await Model.User.findById(req.id)
+    await res.status(200).json({...user._doc,password:undefined})
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+    
+  }
+}
 const deleteAllusers=async (req,res)=>{
   try {
     await Model.User.deleteMany();
@@ -59,4 +68,4 @@ const deleteAllusers=async (req,res)=>{
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
 }
-module.exports = { signup, login, getAllUser, getUser,deleteAllusers };
+module.exports = { signup, login, getAllUser, getUser,deleteAllusers,LoginByToken };

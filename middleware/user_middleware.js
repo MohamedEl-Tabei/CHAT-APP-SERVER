@@ -1,5 +1,5 @@
 const Util = require("../base/util");
-
+const Model=require ("../base/model")
 const preSignup =async (req, res, nxt) => {
   try {
     let data = req.body;
@@ -12,5 +12,13 @@ const preSignup =async (req, res, nxt) => {
     res.status(401).json(Util.Error.getErrorMessage(error));
   }
 };
-
-module.exports = { preSignup };
+const verifyToken=async (req,res,nxt)=>{
+  try {
+    let data= await Model.User.verifyJWT(req.headers["x-auth-token"])
+    req.id=await data.id
+    await nxt();
+  } catch (error) {
+    res.status(401).json(Util.Error.getErrorMessage(error));
+  }
+}
+module.exports = { preSignup,verifyToken };

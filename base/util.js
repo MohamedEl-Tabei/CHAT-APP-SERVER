@@ -20,7 +20,6 @@ const Util = {
     //Q
     //R
     //S
-    SendEmail:require("../util/sendEmail"),
     //T
     //U
     //V
