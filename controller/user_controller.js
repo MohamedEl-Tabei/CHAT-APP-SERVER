@@ -1,5 +1,6 @@
 const Model = require("../base/model");
 const Util = require("../base/util");
+const Send = require("../email");
 const signup = async (req, res) => {
   try {
     let rememberMe = req.body.rememberMe;
@@ -51,21 +52,44 @@ const getUser = async (req, res) => {
     res.status(401).json(Util.Error.getErrorMessage(error));
   }
 };
-const LoginByToken=async(req,res)=>{
+const LoginByToken = async (req, res) => {
   try {
-    let user=await Model.User.findById(req.id)
-    await res.status(200).json({...user._doc,password:undefined})
+    let user = await Model.User.findById(req.id);
+    await res.status(200).json({ ...user._doc, password: undefined });
   } catch (error) {
     res.status(400).json(Util.Error.getErrorMessage(error));
-    
   }
-}
-const deleteAllusers=async (req,res)=>{
+};
+const deleteAllusers = async (req, res) => {
   try {
     await Model.User.deleteMany();
-    res.status(200).json("Done")
+    res.status(200).json("Done");
   } catch (error) {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
-}
-module.exports = { signup, login, getAllUser, getUser,deleteAllusers,LoginByToken };
+};
+const sendResetPasswordLink = async (req, res) => {
+  try {
+    let users = await Model.User.find({
+      email: req.body.email.toLowerCase(),
+    });
+    let token = "";
+    if (users.length) {
+      let user = users[0];
+      token = await user.createJWT({ expiresIn: "5 m" });
+    }
+    await Send.resetPasswordLink(req.body.email, token);
+    res.status(200).json("ok");
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
+module.exports = {
+  signup,
+  login,
+  getAllUser,
+  getUser,
+  deleteAllusers,
+  LoginByToken,
+  sendResetPasswordLink,
+};
