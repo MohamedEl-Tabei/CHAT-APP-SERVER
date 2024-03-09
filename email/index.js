@@ -68,7 +68,7 @@ const resetPasswordLink = async (email, token) => {
             <h3 style="margin: auto;width: max-content;">Password reset</h3>
             <p style="margin-bottom:0px;">We heard that you lost your Effect password. Sorry about that!</p>
             <p style="margin-top:5px;">But don’t worry! You can use the following button to reset your password:</p>
-            <a style="width: max-content;text-decoration:none;display:flex;margin:auto;" href="${resetLink}resetPassword/user?=${token}">
+            <a style="width: max-content;text-decoration:none;display:flex;margin:auto;" href="${resetLink}/resetPassword/${token}">
               <div style="width: max-content; margin: 50px auto;background-color:#1c264e;padding: 10px 20px;color: white;border-radius: 25px; cursor: pointer;">Reset your password</div>
             </a>
             <p>Thanks,</p>
