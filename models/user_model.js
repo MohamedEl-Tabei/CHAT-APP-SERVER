@@ -18,8 +18,8 @@ User.method("createJWT", async function (rememberMe) {
   let token = await jwt.sign({ id: this.id }, process.env.PRIVATEKEY, options);
   return token;
 });
-User.method("createJWT", async function (payload,options) {
-  let token = await jwt.sign(payload, process.env.PRIVATEKEY, options);
+User.method("createJWT", async function (options) {
+  let token = await jwt.sign({ id: this.id }, process.env.PRIVATEKEY, options);
   return token;
 });
 User.static("verifyJWT", async function (token) {
