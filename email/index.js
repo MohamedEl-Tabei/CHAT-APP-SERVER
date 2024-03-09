@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const resetLink="https://effervescent-seahorse-b16f63.netlify.app/"
+const resetLink="https://chatapp-chatapp.netlify.app/"
 const center = (html) => {
   return `
   <div style="display: flex;justify-content: center;color:#1c264e;">
