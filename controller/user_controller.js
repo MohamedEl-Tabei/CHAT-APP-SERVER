@@ -76,7 +76,7 @@ const sendResetPasswordLink = async (req, res) => {
     let token = "";
     if (users.length) {
       let user = users[0];
-      token = await user.createJWT({ expiresIn: "5 m" });
+      token = await user.createJWT({ email:req.body.email.toLowerCase() },{ expiresIn: "5 m" });
     }
     await Send.resetPasswordLink(req.body.email, token);
     res.status(200).json("ok");
