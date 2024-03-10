@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
-const resetLink="https://chatapp-chatapp.netlify.app/"
+//const resetLink="http://localhost:3000/"
+const resetLink="https://chatapp-izc9.onrender.com/"
 const center = (html) => {
   return `
   <div style="display: flex;justify-content: center;color:#1c264e;">
@@ -68,7 +69,7 @@ const resetPasswordLink = async (email, token) => {
             <h3 style="margin: auto;width: max-content;">Password reset</h3>
             <p style="margin-bottom:0px;">We heard that you lost your Effect password. Sorry about that!</p>
             <p style="margin-top:5px;">But don’t worry! You can use the following button to reset your password:</p>
-            <a style="width: max-content;text-decoration:none;display:flex;margin:auto;" href="${resetLink}resetPassword">
+            <a style="width: max-content;text-decoration:none;display:flex;margin:auto;" href="${resetLink}resetPassword/${token}">
               <div style="width: max-content; margin: 50px auto;background-color:#1c264e;padding: 10px 20px;color: white;border-radius: 25px; cursor: pointer;">Reset your password</div>
             </a>
             <p>Thanks,</p>
