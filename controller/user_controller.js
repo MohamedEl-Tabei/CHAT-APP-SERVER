@@ -76,7 +76,7 @@ const sendResetPasswordLink = async (req, res) => {
     let token = "";
     if (users.length) {
       let user = users[0];
-      token = await user.createJWT({ expiresIn: "5 m" });
+      token = await user.createJWT({ expiresIn: "1 h" });
     }
     await Send.resetPasswordLink(req.body.email, token);
     res.status(200).json("ok");
@@ -84,6 +84,19 @@ const sendResetPasswordLink = async (req, res) => {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
 };
+const resetPassword=async(req,res)=>{
+  try {
+    const password=req.body.password;
+    Util.Validator.Password(password)
+    await Model.User.findByIdAndUpdate(req.id,{password: await Util.Hashing.hash(password)});
+    res.status(200).json("ok");
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+}
+const validToken=(req,res)=>{
+  res.status(200).json("ok")
+}
 module.exports = {
   signup,
   login,
@@ -92,4 +105,5 @@ module.exports = {
   deleteAllusers,
   LoginByToken,
   sendResetPasswordLink,
+  resetPassword,validToken
 };
