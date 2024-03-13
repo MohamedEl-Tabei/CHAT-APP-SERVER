@@ -1,7 +1,13 @@
 const nodemailer = require("nodemailer");
-//const resetLink = "http://localhost:3000/resetPassword";
-const resetLink="https://chatapp-izc9.onrender.com/resetPassword"
-const webLink = "https://chatapp-izc9.onrender.com/";
+//const link="http://localhost:3000/"
+const link = "https://chatapp-izc9.onrender.com/";
+const center = (html) => {
+  return `
+  <div style="display: flex;justify-content: center;color:#1c264e;">
+    ${html}
+  </div>
+  `;
+};
 const code = async (email, cod) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -35,23 +41,6 @@ const code = async (email, cod) => {
   });
 };
 const resetPasswordLink = async (email, token) => {
-  const html = token.length
-    ? ` 
-  <div style="text-align:-webkit-center;">
-    <a href="${resetLink}/${token}" style="text-decoration:none;">
-      <div style="width:max-content;color:white;background-color:#1c264e;border:4px solid #1c264e ;border-radius:10px;padding:10px;font-weight:bold;">Reset your password</div>
-    </a>     
-    <h6 style="margin:0px;margin-top:15px;color:#1c264e">You're receiving this email because a password reset was requested for your account.</h6>
-  </div>
-`
-    : `
-<div style="text-align:-webkit-center;">
-  <a href="${webLink}" style="text-decoration:none;">
-    <div style="width:max-content;color:white;background-color:#1c264e;border:4px solid #1c264e ;border-radius:10px;padding:10px;font-weight:bold;">Create new acount</div>
-  </a>    
-  <h6 style="margin:0px;margin-top:15px;color:red">You don't have a CHATAPP account.</h6>
-</div>
-`;
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     service: "gmail",
@@ -66,7 +55,40 @@ const resetPasswordLink = async (email, token) => {
     from: process.env.EMAIL,
     to: email,
     subject: "Reset Password",
-    html,
+    html: `
+      ${center(
+        `<img src="https://i.ibb.co/PgSzxkT/image-29.png" style="width: 210px; margin:auto;padding:5px;background-color: #1c264e;"/>`
+      )}
+      ${center(
+        `<h2 style="font-weight: normal;margin:10px auto;">Reset your password</h2>`
+      )}
+      ${center(
+        token.length
+          ? `<div style="border:1px solid #e1e4e8;padding: 30px;width: max-content;margin:auto;border-radius: 15px;">
+              <h3 style="margin: auto;width: max-content;">Password reset</h3>
+              <p style="margin-bottom:0px;">We heard that you lost your Effect password. Sorry about that!</p>
+              <p style="margin-top:5px;">But don’t worry! You can use the following button to reset your password:</p>
+              <a style="width: max-content;text-decoration:none;display:flex;margin:auto;" href="${link}resetPassword/${token}">
+                <div style="width: max-content; margin: 50px auto;background-color:#1c264e;padding: 10px 20px;color: white;border-radius: 25px; cursor: pointer;">Reset your password</div>
+              </a>
+              <p>Thanks,</p>
+              <p>Mohamed Eltabei</p>
+            </div>`
+          : `<div style="border:1px solid #e1e4e8;padding: 30px;width: max-content;margin:auto;border-radius: 15px;">
+              <h3 style="margin: auto;width: max-content;">Password reset</h3>
+              <p style="margin-bottom:0px;">You don't have an account. Sorry about that!</p>
+              <p style="margin-top:5px;">But don’t worry! You can use the following button to create your acount:</p>
+              <a style="width: max-content;text-decoration:none;display:flex;margin:auto;" href="${link}">
+                <div style="width: max-content; margin: 50px auto;background-color:#1c264e;padding: 10px 20px;color: white;border-radius: 25px; cursor: pointer;">Create your account</div>
+              </a>
+              <p>Thanks,</p>
+              <p>Mohamed Eltabei</p>
+            </div>`
+      )}
+      ${center(
+        `<small style="margin: 10px auto;">You're receiving this email because a password reset was requested for your account.</small>`
+      )}
+    `,
   });
 };
 

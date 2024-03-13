@@ -27,7 +27,7 @@ const login = async (req, res) => {
     let valid = true;
     if (dbUser) {
       if (await Util.Hashing.compare(user.password, dbUser.password)) {
-        let token = await dbUser.createJWT(user.rememberMe);
+        let token = await dbUser.createJWTLogin(user.rememberMe);
         res.status(200).json({ ...dbUser._doc, password: undefined, token });
       } else valid = false;
     } else valid = false;

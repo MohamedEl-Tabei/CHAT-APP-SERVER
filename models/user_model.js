@@ -13,7 +13,7 @@ const options = {
   timestamps: true,
 };
 const User = new mongoose.Schema(schema, options);
-User.method("createJWT", async function (rememberMe) {
+User.method("createJWTLogin", async function (rememberMe) {
   let options = { expiresIn: rememberMe ? "10 days" : "1 days" };
   let token = await jwt.sign({ id: this.id }, process.env.PRIVATEKEY, options);
   return token;
