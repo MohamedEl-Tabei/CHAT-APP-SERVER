@@ -60,6 +60,14 @@ const LoginByToken = async (req, res) => {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
 };
+const searchNewFriend=async(req,res)=>{
+  try {
+    let users=await Model.User.find();
+    res.status(200).json(users.filter(user=>user.name.toLowerCase().includes(req.body.keyword.toLowerCase())))
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+}
 const deleteAllusers = async (req, res) => {
   try {
     await Model.User.deleteMany();
@@ -105,5 +113,5 @@ module.exports = {
   deleteAllusers,
   LoginByToken,
   sendResetPasswordLink,
-  resetPassword,validToken
+  resetPassword,validToken,searchNewFriend
 };
