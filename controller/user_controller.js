@@ -28,7 +28,14 @@ const login = async (req, res) => {
     if (dbUser) {
       if (await Util.Hashing.compare(user.password, dbUser.password)) {
         let token = await dbUser.createJWTLogin(user.rememberMe);
-        res.status(200).json({ ...dbUser._doc, password: undefined, token });
+        res.status(200).json({
+          ...dbUser._doc,
+          password: undefined,
+          friends: undefined,
+          requestToYou: undefined,
+          requestFromYou: undefined,
+          token,
+        });
       } else valid = false;
     } else valid = false;
     if (!valid) throw new Error("Invalid email or password.");
@@ -55,7 +62,14 @@ const getUser = async (req, res) => {
 const LoginByToken = async (req, res) => {
   try {
     let user = await Model.User.findById(req.id);
-    await res.status(200).json({ ...user._doc, password: undefined });
+
+    await res.status(200).json({
+      ...user._doc,
+      password: undefined,
+      friends: undefined,
+      requestToYou: undefined,
+      requestFromYou: undefined,
+    });
   } catch (error) {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
@@ -102,14 +116,14 @@ const searchRequest = async (req, res) => {
       while (user[key].length) {
         let userId = user[key].pop();
         let request = await Model.User.findById(userId);
-        if (request.name.toLocaleLowerCase().includes(keyword)) data.push(request);
+        if (request.name.toLocaleLowerCase().includes(keyword))
+          data.push(request);
       }
-      return data
+      return data;
     };
     let fromYou = await searchRequest_s("requestFromYou");
     let toYou = await searchRequest_s("requestToYou");
-    let arr=
-    await res.status(200).json([fromYou,toYou]);
+    await res.status(200).json([fromYou, toYou]);
   } catch (error) {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
@@ -150,6 +164,39 @@ const resetPassword = async (req, res) => {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
 };
+const getAllFriends = async (req, res) => {
+  try {
+    let user = await Model.User.findById(req.id);
+    let friends = [];
+    while (user.friends.length) {
+      let friendId = user.friends.pop();
+      let friend = await Model.User.findById(friendId);
+      friends.push(friend);
+    }
+    res.status(200).json(friends);
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
+const getRequests = async (req, res) => {
+  try {
+    let user = await Model.User.findById(req.id);
+    let searchRequest_s = async (key) => {
+      let data = [];
+      while (user[key].length) {
+        let userId = user[key].pop();
+        let request = await Model.User.findById(userId);
+        data.push(request);
+      }
+      return data;
+    };
+    let fromYou = await searchRequest_s("requestFromYou");
+    let toYou = await searchRequest_s("requestToYou");
+    await res.status(200).json([fromYou, toYou]);
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
 const validToken = (req, res) => {
   res.status(200).json("ok");
 };
@@ -166,4 +213,6 @@ module.exports = {
   searchNewFriend,
   searchYourFriend,
   searchRequest,
+  getAllFriends,
+  getRequests,
 };
