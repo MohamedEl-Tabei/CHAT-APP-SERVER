@@ -60,14 +60,60 @@ const LoginByToken = async (req, res) => {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
 };
-const searchNewFriend=async(req,res)=>{
+const searchNewFriend = async (req, res) => {
   try {
-    let users=await Model.User.find();
-    res.status(200).json(users.filter(user=>user.name.toLowerCase().includes(req.body.keyword.toLowerCase())))
+    let users = await Model.User.find();
+    let user = await Model.User.findById(req.id);
+    res
+      .status(200)
+      .json(
+        users.filter(
+          (u) =>
+            u.name.toLowerCase().includes(req.body.keyword.toLowerCase()) &&
+            !(user.friends.includes(u.id) || u.id === user.id)
+        )
+      );
   } catch (error) {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
-}
+};
+const searchYourFriend = async (req, res) => {
+  try {
+    let user = await Model.User.findById(req.id);
+    let keyword = req.body.keyword;
+    let data = [];
+    while (user.friends.length) {
+      let friendId = user.friends.pop();
+      let friend = await Model.User.findById(friendId);
+      if (friend.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()))
+        data.push(friend);
+    }
+    res.status(200).json(await data);
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
+const searchRequest = async (req, res) => {
+  try {
+    let user = await Model.User.findById(req.id);
+    let keyword = req.body.keyword;
+    let searchRequest_s = async (key) => {
+      let data = [];
+      while (user[key].length) {
+        let userId = user[key].pop();
+        let request = await Model.User.findById(userId);
+        if (request.name.toLocaleLowerCase().includes(keyword)) data.push(request);
+      }
+      return data
+    };
+    let fromYou = await searchRequest_s("requestFromYou");
+    let toYou = await searchRequest_s("requestToYou");
+    let arr=
+    await res.status(200).json([fromYou,toYou]);
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
 const deleteAllusers = async (req, res) => {
   try {
     await Model.User.deleteMany();
@@ -92,19 +138,21 @@ const sendResetPasswordLink = async (req, res) => {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
 };
-const resetPassword=async(req,res)=>{
+const resetPassword = async (req, res) => {
   try {
-    const password=req.body.password;
-    Util.Validator.Password(password)
-    await Model.User.findByIdAndUpdate(req.id,{password: await Util.Hashing.hash(password)});
+    const password = req.body.password;
+    Util.Validator.Password(password);
+    await Model.User.findByIdAndUpdate(req.id, {
+      password: await Util.Hashing.hash(password),
+    });
     res.status(200).json("ok");
   } catch (error) {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
-}
-const validToken=(req,res)=>{
-  res.status(200).json("ok")
-}
+};
+const validToken = (req, res) => {
+  res.status(200).json("ok");
+};
 module.exports = {
   signup,
   login,
@@ -113,5 +161,9 @@ module.exports = {
   deleteAllusers,
   LoginByToken,
   sendResetPasswordLink,
-  resetPassword,validToken,searchNewFriend
+  resetPassword,
+  validToken,
+  searchNewFriend,
+  searchYourFriend,
+  searchRequest,
 };
