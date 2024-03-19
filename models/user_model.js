@@ -7,7 +7,8 @@ const schema = {
   image: { type: String, default: "https://i.ibb.co/QrJDDVt/salah.png" },
   friends:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
   requestToYou:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
-  requestFromYou:{type:[mongoose.SchemaTypes.ObjectId],default:[]}
+  requestFromYou:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
+  socketId:{type:String,default:""}
 };
 const options = {
   timestamps: true,
