@@ -13,4 +13,4 @@ let server = app.listen(port, () => {
   console.log(`Running on port ${port}`);
 });
 let io = new Server(server, { cors: "*" });
-io.on("connection",connection.onConnection);
+io.on("connection",(socket)=>connection.onConnection(socket,io));
