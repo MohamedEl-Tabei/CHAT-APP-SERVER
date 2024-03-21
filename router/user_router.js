@@ -13,7 +13,9 @@ router.route("/searchNewFriend").post(Middleware.User.verifyToken,Controller.Use
 router.route("/searchRequest").post(Middleware.User.verifyToken,Controller.User.searchRequest)
 //put
 router.route("/resetPassword").put(Middleware.User.verifyToken,Controller.User.resetPassword);
+
 //get
+router.route("/clearRequestNotifications").get(Middleware.User.verifyToken,Controller.User.clearRequestNotifications)
 router.route("/users").get(Controller.User.getAllUser);
 router.route("/validToken").get(Middleware.User.verifyToken,Controller.User.validToken);
 router.route("/loginByToken").get(Middleware.User.verifyToken,Controller.User.LoginByToken);

@@ -84,7 +84,11 @@ const searchNewFriend = async (req, res) => {
         users.filter(
           (u) =>
             u.name.toLowerCase().includes(req.body.keyword.toLowerCase()) &&
-            !(user.friends.includes(u.id) || u.id === user.id)
+            !(user.friends.includes(u.id) || u.id === user.id) &&
+            !(
+              user.requestFromYou.includes(u.id) ||
+              user.requestToYou.includes(u.id)
+            )
         )
       );
   } catch (error) {
@@ -200,6 +204,14 @@ const getRequests = async (req, res) => {
 const validToken = (req, res) => {
   res.status(200).json("ok");
 };
+const clearRequestNotifications = async (req, res) => {
+  try {
+    await Model.User.findByIdAndUpdate(req.id, { requestNotifications: [] });
+    await res.status(200).json("no notifications");
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
 module.exports = {
   signup,
   login,
@@ -215,4 +227,5 @@ module.exports = {
   searchRequest,
   getAllFriends,
   getRequests,
+  clearRequestNotifications,
 };

@@ -8,7 +8,9 @@ const schema = {
   friends:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
   requestToYou:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
   requestFromYou:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
-  socketId:{type:String,default:""}
+  socketId:{type:String,default:""},
+  requestNotifications:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
+  messageNotifications:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
 };
 const options = {
   timestamps: true,

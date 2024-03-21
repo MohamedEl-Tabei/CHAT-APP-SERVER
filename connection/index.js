@@ -1,4 +1,5 @@
 const Model = require("../base/model");
+const Events = require("./events");
 const onConnection = async (socket, io) => {
   let socketId = socket.id;
   await socket.on("addToOnlineUsers", async (userId) => {
@@ -10,18 +11,23 @@ const onConnection = async (socket, io) => {
     const sender = await Model.User.findById(senderId);
     let requestFromYou = [...sender.requestFromYou];
     let requestToYou = [...receiver.requestToYou];
+    let requestNotifications=[...receiver.requestNotifications]
+    requestNotifications.push(sender._id)
     requestFromYou.push(receiver._id);
     requestToYou.push(sender._id);
     await sender.updateOne({
       requestFromYou,
     });
     await receiver.updateOne({
-      requestToYou,
+      requestToYou,requestNotifications
     });
     await io
       .to(await receiver.socketId)
       .emit("requestNotification", await sender._id);
   });
+  await socket.on("cancelRequest",async (receiverId, senderId) =>
+    await Events.cancelRequest(io, receiverId, senderId)
+  );
   await socket.on("disconnect", async () => {
     const user = await Model.User.findOneAndUpdate(
       { socketId },
