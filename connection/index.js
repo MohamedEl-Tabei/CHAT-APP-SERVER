@@ -39,6 +39,7 @@ const onConnection = async (socket, io) => {
     async (receiverId, senderId) =>
       await Events.acceptRequest(io, receiverId, senderId)
   );
+  await socket.on("refuseRequest",async (receiverId,senderId)=>await Events.refuseRequest(io,receiverId,senderId))
   await socket.on("disconnect", async () => {
     const user = await Model.User.findOneAndUpdate(
       { socketId },

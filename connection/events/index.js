@@ -47,8 +47,19 @@ const acceptRequest = async (io, receiverId, senderId) => {
     console.log(error);
   }
 };
+const refuseRequest=async(io, receiverId,senderId)=>{
+  let sender=await Model.User.findById(senderId);
+  let receiver=await Model.User.findById(receiverId);
+  await sender.updateOne({
+    requestToYou:Util.Arry.deleteOneFromArray(receiver._id,sender.requestToYou)
+  })
+  await receiver.updateOne({
+    requestFromYou:Util.Arry.deleteOneFromArray(sender._id,receiver.requestFromYou)
+  })
+  io.to(await receiver.socketId).emit("requestRefused",await sender._id)
+}
 const Events = {
   cancelRequest,
-  acceptRequest,
+  acceptRequest,refuseRequest
 };
 module.exports = Events;
