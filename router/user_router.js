@@ -22,7 +22,7 @@ router.route("/loginByToken").get(Middleware.User.verifyToken,Controller.User.Lo
 router.route("/frends").get(Middleware.User.verifyToken,Controller.User.getAllFriends);
 router.route("/requests").get(Middleware.User.verifyToken,Controller.User.getRequests);
 
-router.route("/:id").get(Controller.User.getUser);
+router.route("/:id").get(Middleware.User.verifyToken,Controller.User.getUser);
 
 
 

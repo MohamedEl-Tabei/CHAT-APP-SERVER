@@ -53,7 +53,7 @@ const getAllUser = async (req, res) => {
 };
 const getUser = async (req, res) => {
   try {
-    let user = await Model.User.findById(req.params.id, "name image friends");
+    let user = await Model.User.findById(req.params.id, "name image socketId");
     res.status(200).json(user);
   } catch (error) {
     res.status(401).json(Util.Error.getErrorMessage(error));
