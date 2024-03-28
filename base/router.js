@@ -12,6 +12,7 @@ const Router = {
   //K
   //L
   //M
+  Message:require("../router/messag_router"),
   //N
   //O
   //P

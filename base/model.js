@@ -12,6 +12,7 @@ const Model = {
     //K
     //L
     //M
+    Message:require("../models/message_model"),
     //N
     //O
     //P

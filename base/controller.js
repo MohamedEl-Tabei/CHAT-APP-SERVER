@@ -12,6 +12,7 @@ const Controller = {
   //K
   //L
   //M
+  Message:require("../controller/message_controller"),
   //N
   //O
   //P
