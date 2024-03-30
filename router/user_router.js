@@ -11,6 +11,7 @@ router.route("/sendResetPasswordLink").post(Controller.User.sendResetPasswordLin
 router.route("/searchFriend").post(Middleware.User.verifyToken,Controller.User.searchYourFriend)
 router.route("/searchNewFriend").post(Middleware.User.verifyToken,Controller.User.searchNewFriend)
 router.route("/searchRequest").post(Middleware.User.verifyToken,Controller.User.searchRequest)
+router.route("/addToMostRecentlyUsedEmoji").post(Middleware.User.verifyToken,Controller.User.addToMostRecentlyUsedEmoji)
 //put
 router.route("/resetPassword").put(Middleware.User.verifyToken,Controller.User.resetPassword);
 
@@ -21,6 +22,7 @@ router.route("/validToken").get(Middleware.User.verifyToken,Controller.User.vali
 router.route("/loginByToken").get(Middleware.User.verifyToken,Controller.User.LoginByToken);
 router.route("/frends").get(Middleware.User.verifyToken,Controller.User.getAllFriends);
 router.route("/requests").get(Middleware.User.verifyToken,Controller.User.getRequests);
+router.route("/recentlyUsedEmoji").get(Middleware.User.verifyToken,Controller.User.getMostRecentlyUsedEmoji);
 
 router.route("/:id").get(Middleware.User.verifyToken,Controller.User.getUser);
 

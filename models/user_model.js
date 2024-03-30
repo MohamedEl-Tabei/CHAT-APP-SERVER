@@ -11,6 +11,7 @@ const schema = {
   socketId:{type:String,default:""},
   requestNotifications:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
   messageNotifications:{type:[mongoose.SchemaTypes.ObjectId],default:[]},
+  mostUsedEmoji:{type:[String],default:[]}
 };
 const options = {
   timestamps: true,

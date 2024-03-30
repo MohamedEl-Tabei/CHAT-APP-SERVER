@@ -212,6 +212,32 @@ const clearRequestNotifications = async (req, res) => {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
 };
+const getMostRecentlyUsedEmoji = async (req, res) => {
+  try {
+    const mostUsedEmoji = await Model.User.findById(req.id, "mostUsedEmoji");
+    await res.status(200).json(mostUsedEmoji);
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
+const addToMostRecentlyUsedEmoji = async (req, res) => {
+  try {
+    const user = await Model.User.findById(req.id);
+    const mostUsedEmoji = user.mostUsedEmoji;
+    let arr = Util.Arry.deleteOneFromArray(req.body.emoji,[...mostUsedEmoji])
+    if (mostUsedEmoji.length >= 150) {
+      arr.pop();
+      arr.unshift(req.body.emoji);
+    } else {
+      arr.unshift(req.body.emoji);
+
+    }
+    await user.updateOne({ mostUsedEmoji: arr });
+    await res.status(200).json(arr);
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
 module.exports = {
   signup,
   login,
@@ -228,4 +254,6 @@ module.exports = {
   getAllFriends,
   getRequests,
   clearRequestNotifications,
+  getMostRecentlyUsedEmoji,
+  addToMostRecentlyUsedEmoji
 };
