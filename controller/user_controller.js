@@ -224,16 +224,54 @@ const addToMostRecentlyUsedEmoji = async (req, res) => {
   try {
     const user = await Model.User.findById(req.id);
     const mostUsedEmoji = user.mostUsedEmoji;
-    let arr = Util.Arry.deleteOneFromArray(req.body.emoji,[...mostUsedEmoji])
+    let arr = Util.Arry.deleteOneFromArray(req.body.emoji, [...mostUsedEmoji]);
     if (mostUsedEmoji.length >= 150) {
       arr.pop();
       arr.unshift(req.body.emoji);
     } else {
       arr.unshift(req.body.emoji);
-
     }
     await user.updateOne({ mostUsedEmoji: arr });
     await res.status(200).json(arr);
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
+const getLastMessage = async (req, res) => {
+  try {
+    const user = await Model.User.findById(req.id);
+    const connectWithId = req.body.id;
+    const messagesToYou = await Model.Message.find({
+      sender: connectWithId,
+      reciever: user.id,
+    });
+    const messagesFromYou = await Model.Message.find({
+      sender: user.id,
+      reciever: connectWithId,
+    });
+    const messages = [
+      ...(await messagesFromYou),
+      ...(await messagesToYou),
+    ].sort((x, y) => x.createdAt - y.createdAt);
+    await res.status(200).json(messages[messages.length - 1]);
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
+const getMessageNotifications = async (req, res) => {
+  try {
+    let user = await Model.User.findById(req.id);
+    res.status(200).json(await user.messageNotifications);
+  } catch (error) {
+    res.status(400).json(Util.Error.getErrorMessage(error));
+  }
+};
+const deleteMessageNotifications = async (req, res) => {
+  try {
+    let user = await Model.User.findById(req.id);
+    let messageNotifications=Util.Arry.deleteOneFromArray(req.body.id,user.messageNotifications);
+    await user.updateOne({messageNotifications:await messageNotifications})
+    res.status(200).json(await messageNotifications);
   } catch (error) {
     res.status(400).json(Util.Error.getErrorMessage(error));
   }
@@ -255,5 +293,8 @@ module.exports = {
   getRequests,
   clearRequestNotifications,
   getMostRecentlyUsedEmoji,
-  addToMostRecentlyUsedEmoji
+  addToMostRecentlyUsedEmoji,
+  getLastMessage,
+  getMessageNotifications,
+  deleteMessageNotifications,
 };

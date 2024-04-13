@@ -12,6 +12,9 @@ router.route("/searchFriend").post(Middleware.User.verifyToken,Controller.User.s
 router.route("/searchNewFriend").post(Middleware.User.verifyToken,Controller.User.searchNewFriend)
 router.route("/searchRequest").post(Middleware.User.verifyToken,Controller.User.searchRequest)
 router.route("/addToMostRecentlyUsedEmoji").post(Middleware.User.verifyToken,Controller.User.addToMostRecentlyUsedEmoji)
+router.route("/getLastMessage").post(Middleware.User.verifyToken,Controller.User.getLastMessage)
+router.route("/deleteMessageNotifications").post(Middleware.User.verifyToken,Controller.User.deleteMessageNotifications);
+
 //put
 router.route("/resetPassword").put(Middleware.User.verifyToken,Controller.User.resetPassword);
 
@@ -23,6 +26,8 @@ router.route("/loginByToken").get(Middleware.User.verifyToken,Controller.User.Lo
 router.route("/frends").get(Middleware.User.verifyToken,Controller.User.getAllFriends);
 router.route("/requests").get(Middleware.User.verifyToken,Controller.User.getRequests);
 router.route("/recentlyUsedEmoji").get(Middleware.User.verifyToken,Controller.User.getMostRecentlyUsedEmoji);
+router.route("/MessageNotifications").get(Middleware.User.verifyToken,Controller.User.getMessageNotifications);
+
 
 router.route("/:id").get(Middleware.User.verifyToken,Controller.User.getUser);
 
